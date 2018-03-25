@@ -26,7 +26,7 @@ def blynkProjects(token):
    burl='http://blynk-cloud.com/%s/project' %(token)
    url = urllib.urlopen(burl)
    data = json.loads(url.read().decode())
-   print(data)
+   print(data['widgets'])
 
  
 def my_publish_callback(envelope, status):
