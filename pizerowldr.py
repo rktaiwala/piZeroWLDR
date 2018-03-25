@@ -97,12 +97,12 @@ class MySubscribeCallback(SubscribeCallback):
               print 'Light intensity is low'
               if timeCheck():
                   if tsMotioncheck() ==1:
-                     for k,v in enumerate(lights):
+                     for k,v in enumerate(workingLight):
                         blynkOnOff(v,1)
                   else:
                      last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
                      if last_time>4:
-                        for k,v in enumerate(lights):
+                        for k,v in enumerate(workingLight):
                            blynkOnOff(v,0)
             pubnub.publish().channel(channel).message([
                                             ['current_time', time.time()],
