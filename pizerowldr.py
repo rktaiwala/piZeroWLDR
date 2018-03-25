@@ -1,5 +1,6 @@
 import os
 import time
+import datetime
 import sys
 import RPi.GPIO as GPIO
 import urllib
@@ -11,10 +12,13 @@ from pubnub.pubnub import PubNub
 
 GPIO.setmode(GPIO.BCM)
 pin=26
+pin2=20
 GPIO.setup(pin, GPIO.IN)
+GPIO.setup(pin2, GPIO.IN
 channel = 'pi-home'
 pnconfig = PNConfiguration()
 
+lastMotionTime = 0
 token = '1e53fe060245429fb7b24522d81598c8'
 
 blynkUpdateUrl = 'http://blynk-cloud.com/%s/update/pin?value=value' %(token)
@@ -23,21 +27,38 @@ sleep = 30
 
 pnconfig.subscribe_key = 'sub-c-72ad3b94-2f79-11e8-9e56-1adf9750968b'
 pnconfig.publish_key = 'pub-c-04f2bb5c-42fb-4522-81ec-38440739de37'
-switches = ['tube','tubelight','tube light','fan','socket']
+switches =['socket']
+fans = ['fan']
+lights = ['tube','tubelight','tube light']
 workingSwitch ={}
+workingFan ={}
+workingLight ={}
 pubnub = PubNub(pnconfig)
 
+def timeCheck(hr=16, mins=59, sec=55, micros=0):
+   now = datetime.datetime.now()
+   today5pm = now.replace(hour=hr, minute=mins, second=sec, microsecond=micros)
+   return now > today5pm
+    
 def blynkProjects():
    burl=blynkUrl+'project'
    url = urllib.urlopen(burl)
    data = json.loads(url.read().decode())
    for k,v in enumerate(data['widgets']):
       if v['label'].lower() in switches:
-          workingSwitch[v['label']] = v['pin']
+          workingSwitch[v['label'].lower()] = v['pin']
+      elif v['label'].lower() in fans:
+           workingFan[v['label'].lower()] = v['pin']
+      elif v['label'].lower() in lights:
+           workingLight[v['label'].lower()] = v['pin']
    print(workingSwitch)
+   print(workingFan)
+   print(workingLight) 
+           
 def blynkOnOff(pinNumber,onOff):
     burl=blynkUrl+'update/%s?value=%s' %(pinNumber,onOff)
     url = urllib.urlopen(burl)
+    print(url)
    
 def blynkGet(pinNumber):
     burl=blynkUrl+'get/%s' %(pinNumber)
@@ -52,7 +73,13 @@ def my_publish_callback(envelope, status):
         pass  # Handle message publish error. Check 'category' property to find out possible issue
         # because of which request did fail.
         # Request can be resent using: [status retry];
- 
+def tsMotioncheck():
+    motion = GPIO.input(pin2)
+    if motion == 1:
+       lastMotionTime = time.time()
+    else:
+       lastMotionTime = 0
+    return motion
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
         pass  # handle incoming presence data
@@ -63,10 +90,20 @@ class MySubscribeCallback(SubscribeCallback):
             # UI / internal notifications, etc
             
             light = GPIO.input(pin)
+            
             if light==0:
               print 'Light intensity is high'
             else:
               print 'Light intensity is low'
+              if timeCheck():
+                  if tsMotioncheck() ==1:
+                     for k,v in enumerate(lights):
+                        blynkOnOff(v,1)
+                  else:
+                     last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
+                     if last_time>4:
+                        for k,v in enumerate(lights):
+                           blynkOnOff(v,0)
             pubnub.publish().channel(channel).message([
                                             ['current_time', time.time()],
                                             ['light_intensity', light]
