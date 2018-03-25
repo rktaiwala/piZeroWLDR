@@ -47,13 +47,13 @@ def blynkProjects():
    for k,v in enumerate(data['widgets']):
       if v['label'].lower() in switches:
           if v['pinType']=='VIRTUAL':
-            workingSwitch[v['label'].lower()] = 'V'+v['pin']
+            workingSwitch[v['label'].lower()] = 'V'+str(v['pin'])
       elif v['label'].lower() in fans:
            if v['pinType']=='VIRTUAL':
-            workingFan[v['label'].lower()] = 'V'+v['pin']
+            workingFan[v['label'].lower()] = 'V'+str(v['pin'])
       elif v['label'].lower() in lights:
            if v['pinType']=='VIRTUAL':
-            workingLight[v['label'].lower()] = 'V'+v['pin']
+            workingLight[v['label'].lower()] = 'V'+str(v['pin'])
    print(workingSwitch)
    print(workingFan)
    print(workingLight) 
