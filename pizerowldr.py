@@ -2,10 +2,9 @@ import os
 import time
 import sys
 import RPi.GPIO as GPIO
-from pubnub.pubnub import PubNub
-mode = GPIO.getmode()
-print mode
-GPIO.setmode(GPIO.BOARD)
+from pubnub.pubnub import PubNub 
+print GPIO.getmode()
+GPIO.setmode(GPIO.BCM)
 pin=25
 GPIO.setup(pin, GPIO.IN)
 
