@@ -29,8 +29,7 @@ def my_publish_callback(envelope, status):
         # because of which request did fail.
         # Request can be resent using: [status retry];
  
-while True: 
-  class MySubscribeCallback(SubscribeCallback):
+class MySubscribeCallback(SubscribeCallback):
    
     def status(self, pubnub, status):
         if status.category == PNStatusCategory.PNConnectedCategory:
