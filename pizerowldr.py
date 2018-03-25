@@ -23,7 +23,7 @@ sleep = 30
 
 pnconfig.subscribe_key = 'sub-c-72ad3b94-2f79-11e8-9e56-1adf9750968b'
 pnconfig.publish_key = 'pub-c-04f2bb5c-42fb-4522-81ec-38440739de37'
-switches = ['Tube','tubelight','tube light','Fan','socket']
+switches = ['tube','tubelight','tube light','fan','socket']
 workingSwitch ={}
 pubnub = PubNub(pnconfig)
 
@@ -32,7 +32,7 @@ def blynkProjects():
    url = urllib.urlopen(burl)
    data = json.loads(url.read().decode())
    for k,v in enumerate(data['widgets']):
-      if v['label'] in switches:
+      if v['label'].lower() in switches:
           workingSwitch[v['label']] = v['pin']
    print(workingSwitch)
 def blynkOnOff(pinNumber,onOff):
