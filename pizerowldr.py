@@ -2,7 +2,8 @@ import os
 import time
 import sys
 import RPi.GPIO as GPIO
-import urllib.request, json 
+from urllib2 import urlopen
+import json 
 from pubnub.callbacks import SubscribeCallback
 from pubnub.enums import PNStatusCategory
 from pubnub.pnconfiguration import PNConfiguration
@@ -23,7 +24,7 @@ pubnub = PubNub(pnconfig)
 
 def blynkProjects(token):
    burl='http://blynk-cloud.com/%s/project' %(token)
-   with urllib.request.urlopen(burl) as url:
+   with urllib2.urlopen(burl) as url:
        data = json.loads(url.read().decode())
        print(data)
 
