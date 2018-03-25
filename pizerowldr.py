@@ -46,7 +46,7 @@ class MySubscribeCallback(SubscribeCallback):
             else:
               print 'Light intensity is low'
             pubnub.publish().channel(channel).message([
-                                            ['x', time.time()],
+                                            ['current_time', time.time()],
                                             ['light_intensity', light]
                                             ]).async(my_publish_callback)
     def message(self, pubnub, message):
