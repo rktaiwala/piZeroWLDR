@@ -96,6 +96,11 @@ class MySubscribeCallback(SubscribeCallback):
             
             if light==0:
               print 'Light intensity is high'
+              if tsMotioncheck() ==0:
+                  last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
+                     if last_time>4:
+                        for key, value in workingLight.iteritems():
+                           blynkOnOff(value,0)
             else:
               print 'Light intensity is low'
               if timeCheck():
