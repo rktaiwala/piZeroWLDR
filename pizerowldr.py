@@ -80,8 +80,6 @@ def tsMotioncheck():
     motion = GPIO.input(pin2)
     if motion == 1:
        lastMotionTime = time.time()
-    else:
-       lastMotionTime = 0
     return motion
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
