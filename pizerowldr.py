@@ -30,7 +30,8 @@ def my_publish_callback(envelope, status):
         # Request can be resent using: [status retry];
  
 class MySubscribeCallback(SubscribeCallback):
-   
+    def presence(self, pubnub, presence):
+        pass  # handle incoming presence data
     def status(self, pubnub, status):
         if status.category == PNStatusCategory.PNConnectedCategory:
             # Connect event. You can do stuff like publish, and know you'll get it.
@@ -46,6 +47,8 @@ class MySubscribeCallback(SubscribeCallback):
                                             ['x', time.time()],
                                             ['light_intensity', light]
                                             ]).async(my_publish_callback)
+    def message(self, pubnub, message):
+        pass  # Handle new message stored in message.message
  
 pubnub.add_listener(MySubscribeCallback())
 pubnub.subscribe().channels(channel).execute()
