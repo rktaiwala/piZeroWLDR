@@ -24,9 +24,9 @@ pubnub = PubNub(pnconfig)
 
 def blynkProjects(token):
    burl='http://blynk-cloud.com/%s/project' %(token)
-   with urllib.urlopen(burl) as url:
-       data = json.loads(url.read().decode())
-       print(data)
+   url = urllib.urlopen(burl)
+   data = json.loads(url.read().decode())
+   print(data)
 
  
 def my_publish_callback(envelope, status):
