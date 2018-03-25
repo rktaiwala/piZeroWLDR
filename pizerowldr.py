@@ -13,7 +13,9 @@ pin=26
 GPIO.setup(pin, GPIO.IN)
 channel = 'pi-home'
 pnconfig = PNConfiguration()
- 
+
+sleep = 30
+
 pnconfig.subscribe_key = 'sub-c-72ad3b94-2f79-11e8-9e56-1adf9750968b'
 pnconfig.publish_key = 'pub-c-04f2bb5c-42fb-4522-81ec-38440739de37'
  
@@ -53,4 +55,5 @@ class MySubscribeCallback(SubscribeCallback):
 pubnub.add_listener(MySubscribeCallback())
 while True:
  pubnub.subscribe().channels(channel).execute()
+ time.sleep(sleep)
 
