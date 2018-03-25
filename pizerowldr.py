@@ -5,10 +5,10 @@ import RPi.GPIO as GPIO
 from pubnub.pubnub import PubNub 
 print GPIO.getmode()
 GPIO.setmode(GPIO.BCM)
-pin=25
+pin=26
 GPIO.setup(pin, GPIO.IN)
 
-pubnub = Pubnub(publish_key='pub-c-04f2bb5c-42fb-4522-81ec-38440739de37', subscribe_key='sub-c-72ad3b94-2f79-11e8-9e56-1adf9750968b')
+pubnub = PubNub(publish_key='pub-c-04f2bb5c-42fb-4522-81ec-38440739de37', subscribe_key='sub-c-72ad3b94-2f79-11e8-9e56-1adf9750968b')
 channel = 'pi-home'
 
 def callback(message):
