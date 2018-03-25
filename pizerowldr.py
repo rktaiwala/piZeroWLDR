@@ -23,7 +23,7 @@ token = '1e53fe060245429fb7b24522d81598c8'
 
 blynkUpdateUrl = 'http://blynk-cloud.com/%s/update/pin?value=value' %(token)
 blynkUrl = 'http://blynk-cloud.com/%s/' %(token)
-sleep = 30
+sleep = 10
 
 pnconfig.subscribe_key = 'sub-c-72ad3b94-2f79-11e8-9e56-1adf9750968b'
 pnconfig.publish_key = 'pub-c-04f2bb5c-42fb-4522-81ec-38440739de37'
