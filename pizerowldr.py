@@ -99,14 +99,14 @@ class MySubscribeCallback(SubscribeCallback):
                   if tsMotioncheck() ==1:
                      #for k in workingLight:
                      for key, value in workingLight.iteritems():
-                        print(key)
-                        print(value)
-                        blynkOnOff(v,1)
+                        #print(key)
+                        #print(value)
+                        blynkOnOff(value,1)
                   else:
                      last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
                      if last_time>4:
-                        for k,v in enumerate(workingLight):
-                           blynkOnOff(v,0)
+                        for key, value in workingLight.iteritems():
+                           blynkOnOff(value,0)
             pubnub.publish().channel(channel).message([
                                             ['current_time', time.time()],
                                             ['light_intensity', light]
