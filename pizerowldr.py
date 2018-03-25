@@ -98,6 +98,7 @@ class MySubscribeCallback(SubscribeCallback):
               if timeCheck():
                   if tsMotioncheck() ==1:
                      for k,v in enumerate(workingLight):
+                        print(v)
                         blynkOnOff(v,1)
                   else:
                      last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
