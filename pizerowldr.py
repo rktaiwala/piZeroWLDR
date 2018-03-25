@@ -2,7 +2,7 @@ import os
 import time
 import sys
 import RPi.GPIO as GPIO
-
+import urllib.request, json 
 from pubnub.callbacks import SubscribeCallback
 from pubnub.enums import PNStatusCategory
 from pubnub.pnconfiguration import PNConfiguration
@@ -20,7 +20,13 @@ pnconfig.subscribe_key = 'sub-c-72ad3b94-2f79-11e8-9e56-1adf9750968b'
 pnconfig.publish_key = 'pub-c-04f2bb5c-42fb-4522-81ec-38440739de37'
  
 pubnub = PubNub(pnconfig)
- 
+
+def blynkProjects(token):
+   burl=f'http://blynk-cloud.com/{token}/project'
+   with urllib.request.urlopen(burl) as url:
+       data = json.loads(url.read().decode())
+       print(data)
+
  
 def my_publish_callback(envelope, status):
     # Check whether request successfully completed or not
@@ -53,6 +59,7 @@ class MySubscribeCallback(SubscribeCallback):
         pass  # Handle new message stored in message.message
  
 pubnub.add_listener(MySubscribeCallback())
+blynkProjects('1e53fe060245429fb7b24522d81598c8')
 while True:
  pubnub.subscribe().channels(channel).execute()
  time.sleep(sleep)
