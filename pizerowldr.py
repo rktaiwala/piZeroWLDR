@@ -22,7 +22,7 @@ pnconfig.publish_key = 'pub-c-04f2bb5c-42fb-4522-81ec-38440739de37'
 pubnub = PubNub(pnconfig)
 
 def blynkProjects(token):
-   burl=f'http://blynk-cloud.com/{token}/project'
+   burl='http://blynk-cloud.com/%s/project' %(token)
    with urllib.request.urlopen(burl) as url:
        data = json.loads(url.read().decode())
        print(data)
