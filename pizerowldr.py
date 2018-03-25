@@ -51,5 +51,6 @@ class MySubscribeCallback(SubscribeCallback):
         pass  # Handle new message stored in message.message
  
 pubnub.add_listener(MySubscribeCallback())
-pubnub.subscribe().channels(channel).execute()
+while True:
+ pubnub.subscribe().channels(channel).execute()
 
