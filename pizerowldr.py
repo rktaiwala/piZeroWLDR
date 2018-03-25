@@ -30,7 +30,7 @@ def my_publish_callback(envelope, status):
         # Request can be resent using: [status retry];
  
 while True: 
-class MySubscribeCallback(SubscribeCallback):
+  class MySubscribeCallback(SubscribeCallback):
    
     def status(self, pubnub, status):
         if status.category == PNStatusCategory.PNConnectedCategory:
@@ -38,15 +38,15 @@ class MySubscribeCallback(SubscribeCallback):
             # Or just use the connected event to confirm you are subscribed for
             # UI / internal notifications, etc
             
-                light = GPIO.input(pin)
-                if light==0:
-                  print 'Light intensity is high'
-                else:
-                  print 'Light intensity is low'
-                pubnub.publish().channel(channel).message([
-                                                ['x', time.time()],
-                                                ['light_intensity', light]
-                                                ]).async(my_publish_callback)
+            light = GPIO.input(pin)
+            if light==0:
+              print 'Light intensity is high'
+            else:
+              print 'Light intensity is low'
+            pubnub.publish().channel(channel).message([
+                                            ['x', time.time()],
+                                            ['light_intensity', light]
+                                            ]).async(my_publish_callback)
  
 pubnub.add_listener(MySubscribeCallback())
 pubnub.subscribe().channels(channel).execute()
