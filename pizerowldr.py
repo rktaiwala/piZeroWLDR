@@ -14,7 +14,7 @@ GPIO.setmode(GPIO.BCM)
 pin=26
 pin2=20
 GPIO.setup(pin, GPIO.IN)
-GPIO.setup(pin2, GPIO.IN
+GPIO.setup(pin2, GPIO.IN)
 channel = 'pi-home'
 pnconfig = PNConfiguration()
 
