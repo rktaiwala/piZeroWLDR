@@ -80,6 +80,7 @@ def tsMotioncheck():
     motion = GPIO.input(pin2)
     if motion == 1:
        lastMotionTime = time.time()
+       print('motion Detected')
     return motion
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
@@ -96,8 +97,9 @@ class MySubscribeCallback(SubscribeCallback):
                print 'Light intensity is high'
                if tsMotioncheck() ==0:
                   last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
-                  if last_time>4:
+                  if last_time>10:
                      for key, value in workingLight.iteritems():
+                        blynkGet(value)
                         blynkOnOff(value,0)
             else:
               print 'Light intensity is low'
@@ -107,6 +109,7 @@ class MySubscribeCallback(SubscribeCallback):
                      for key, value in workingLight.iteritems():
                         #print(key)
                         #print(value)
+                        blynkGet(value)
                         blynkOnOff(value,1)
                   else:
                      last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
