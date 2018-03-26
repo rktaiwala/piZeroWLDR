@@ -61,12 +61,14 @@ def blynkProjects():
 def blynkOnOff(pinNumber,onOff):
     burl=blynkUrl+'update/%s?value=%s' %(pinNumber,onOff)
     url = urllib.urlopen(burl)
-    print(burl)
+    res = json.loads(url.read().decode())
+    print(res)
    
 def blynkGet(pinNumber):
     burl=blynkUrl+'get/%s' %(pinNumber)
     url = urllib.urlopen(burl)
-    print(url)
+    res = json.loads(url.read().decode())
+    print(res)
    
 def my_publish_callback(envelope, status):
     # Check whether request successfully completed or not
