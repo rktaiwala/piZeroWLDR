@@ -34,7 +34,7 @@ workingSwitch ={}
 workingFan ={}
 workingLight ={}
 pubnub = PubNub(pnconfig)
-debug=TRUE
+debug=True
 
 def showDebug(msg):
    if debug:
