@@ -125,8 +125,10 @@ class MySubscribeCallback(SubscribeCallback):
                      last_time = round((time.time() - lastMotionTime) / 60, 2)
                      showDebug(last_time>4)
                      if last_time>4:
+                        showDebug('How %s' % last_time>4)
                         for key, value in workingLight.iteritems():
                            blynkOnOff(value,0)
+                           
             pubnub.publish().channel(channel).message([
                                             ['current_time', time.time()],
                                             ['light_intensity', light]
