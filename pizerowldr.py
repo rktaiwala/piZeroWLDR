@@ -120,7 +120,7 @@ class MySubscribeCallback(SubscribeCallback):
                         blynkGet(value)
                         blynkOnOff(value,1)
                   else:
-                     showDebug('ILM0--LastMotionTime is' % lastMotionTime)
+                     showDebug('ILM0--LastMotionTime is %s' % lastMotionTime)
                      last_time = round((time.time() - lastMotionTime) / 60, 2)
                      showDebug(last_time)
                      if last_time>4:
