@@ -85,6 +85,7 @@ def my_publish_callback(envelope, status):
         # because of which request did fail.
         # Request can be resent using: [status retry];
 def tsMotioncheck():
+    global lastMotionTime
     motion = GPIO.input(pin2)
     if motion == 1:
        lastMotionTime = time.time()
