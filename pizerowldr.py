@@ -123,7 +123,7 @@ class MySubscribeCallback(SubscribeCallback):
                   else:
                      showDebug('ILM0--LastMotionTime is %s' % lastMotionTime)
                      last_time = round((time.time() - lastMotionTime) / 60, 2)
-                     showDebug(last_time)
+                     showDebug(last_time>4)
                      if last_time>4:
                         for key, value in workingLight.iteritems():
                            blynkOnOff(value,0)
