@@ -116,6 +116,7 @@ class MySubscribeCallback(SubscribeCallback):
                         blynkOnOff(value,1)
                   else:
                      last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
+                     print(last_time)
                      if last_time>4:
                         for key, value in workingLight.iteritems():
                            blynkOnOff(value,0)
