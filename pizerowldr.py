@@ -43,7 +43,7 @@ def showDebug(msg):
 def timeCheck(hr=16, mins=59, sec=55, micros=0):
    now = datetime.datetime.now()
    today5pm = now.replace(hour=hr, minute=mins, second=sec, microsecond=micros)
-   showDebug(now > today5pm)
+   #showDebug(now > today5pm)
    return now > today5pm
     
 def blynkProjects():
@@ -88,7 +88,7 @@ def tsMotioncheck():
     motion = GPIO.input(pin2)
     if motion == 1:
        lastMotionTime = time.time()
-       showDebug('motion Detected')
+       showDebug('motion Detected at: %s'% lastMotionTime)
     return motion
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
