@@ -42,9 +42,11 @@ def showDebug(msg):
 
 def timeCheck(hr=16, mins=59, sec=55, micros=0):
    now = datetime.datetime.now()
+   tom = datetime.datetime.now() + datetime.timedelta(days=1)
+   tom8am = tom.replace(hour=8, minute=0, second=0, microsecond=0)
    today5pm = now.replace(hour=hr, minute=mins, second=sec, microsecond=micros)
    #showDebug(now > today5pm)
-   return now > today5pm
+   return now > today5pm and now<today8am
     
 def blynkProjects():
    burl=blynkUrl+'project'
