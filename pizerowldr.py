@@ -109,7 +109,7 @@ class MySubscribeCallback(SubscribeCallback):
                   last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
                   if last_time>5:
                      for key, value in workingLight.iteritems():
-                        if blynkGet(value)==1:
+                        if blynkGet(value)=='1':
                            blynkOnOff(value,0)
             else:
               showDebug('Light intensity is low')
@@ -119,7 +119,7 @@ class MySubscribeCallback(SubscribeCallback):
                      for key, value in workingLight.iteritems():
                         #print(key)
                         #print(value)
-                        if blynkGet(value)==0:
+                        if blynkGet(value)=='0':
                            blynkOnOff(value,1)
                   else:
                      #showDebug('ILM0--LastMotionTime is %s' % lastMotionTime)
@@ -128,7 +128,7 @@ class MySubscribeCallback(SubscribeCallback):
                      if last_time>4:
                         #showDebug('How %s' % last_time>4)
                         for key, value in workingLight.iteritems():
-                           if blynkGet(value) == 1:
+                           if blynkGet(value) == '1':
                               blynkOnOff(value,0)
                            
             pubnub.publish().channel(channel).message([
