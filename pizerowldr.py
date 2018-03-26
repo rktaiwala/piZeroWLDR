@@ -34,11 +34,16 @@ workingSwitch ={}
 workingFan ={}
 workingLight ={}
 pubnub = PubNub(pnconfig)
+debug=true
+
+def showDebug(msg):
+   if debug:
+      print(msg)
 
 def timeCheck(hr=16, mins=59, sec=55, micros=0):
    now = datetime.datetime.now()
    today5pm = now.replace(hour=hr, minute=mins, second=sec, microsecond=micros)
-   print(now > today5pm)
+   showDebug(now > today5pm)
    return now > today5pm
     
 def blynkProjects():
@@ -55,21 +60,21 @@ def blynkProjects():
       elif v['label'].lower() in lights:
            if v['pinType']=='VIRTUAL':
             workingLight[v['label'].lower()] = 'V'+str(v['pin'])
-   print(workingSwitch)
-   print(workingFan)
-   print(workingLight) 
+   showDebug(workingSwitch)
+   showDebug(workingFan)
+   showDebug(workingLight) 
            
 def blynkOnOff(pinNumber,onOff):
     burl=blynkUrl+'update/%s?value=%s' %(pinNumber,onOff)
     url = urllib.urlopen(burl)
     res = json.loads(url.read().decode())
-    print(res)
+    showDebug(res)
    
 def blynkGet(pinNumber):
     burl=blynkUrl+'get/%s' %(pinNumber)
     url = urllib.urlopen(burl)
     res = json.loads(url.read().decode())
-    print(res)
+    showDebug(res)
    
 def my_publish_callback(envelope, status):
     # Check whether request successfully completed or not
@@ -83,7 +88,7 @@ def tsMotioncheck():
     motion = GPIO.input(pin2)
     if motion == 1:
        lastMotionTime = time.time()
-       print('motion Detected')
+       showDebug('motion Detected')
     return motion
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
@@ -97,7 +102,7 @@ class MySubscribeCallback(SubscribeCallback):
             light = GPIO.input(pin)
             
             if light==0:
-               print 'Light intensity is high'
+               showDebug('Light intensity is high')
                if tsMotioncheck() ==0:
                   last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
                   if last_time>10:
@@ -105,7 +110,7 @@ class MySubscribeCallback(SubscribeCallback):
                         blynkGet(value)
                         blynkOnOff(value,0)
             else:
-              print 'Light intensity is low'
+              showDebug('Light intensity is low')
               if timeCheck():
                   if tsMotioncheck() ==1:
                      #for k in workingLight:
@@ -116,7 +121,7 @@ class MySubscribeCallback(SubscribeCallback):
                         blynkOnOff(value,1)
                   else:
                      last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
-                     print(last_time)
+                     showDebug(last_time)
                      if last_time>4:
                         for key, value in workingLight.iteritems():
                            blynkOnOff(value,0)
