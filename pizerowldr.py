@@ -39,7 +39,9 @@ debug=True
 def showDebug(msg):
    if debug:
       print(msg)
-
+def resetlastMotionTime():
+   global lastMotionTime
+   lastMotionTime = 0
 def timeCheck(hr=16, mins=59, sec=55, micros=0):
    now = datetime.datetime.now()
    tom = datetime.datetime.now() + datetime.timedelta(days=1)
@@ -112,7 +114,9 @@ class MySubscribeCallback(SubscribeCallback):
                   if last_time>5:
                      for key, value in workingLight.iteritems():
                         if blynkGet(value)=='1':
+                           resetlastMotionTime()
                            blynkOnOff(value,0)
+                           
             else:
               showDebug('Light intensity is low')
               if timeCheck():
@@ -132,6 +136,7 @@ class MySubscribeCallback(SubscribeCallback):
                         for key, value in workingLight.iteritems():
                            if blynkGet(value) == '1':
                               blynkOnOff(value,0)
+                              resetlastMotionTime()
                            
             pubnub.publish().channel(channel).message([
                                             ['current_time', time.time()],
