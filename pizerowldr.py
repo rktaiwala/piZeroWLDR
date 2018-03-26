@@ -74,7 +74,8 @@ def blynkGet(pinNumber):
     burl=blynkUrl+'get/%s' %(pinNumber)
     url = urllib.urlopen(burl)
     res = json.loads(url.read().decode())
-    showDebug(res)
+    showDebug(res[0])
+    return res[0]
    
 def my_publish_callback(envelope, status):
     # Check whether request successfully completed or not
@@ -106,10 +107,10 @@ class MySubscribeCallback(SubscribeCallback):
                showDebug('Light intensity is high')
                if tsMotioncheck() ==0:
                   last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
-                  if last_time>10:
+                  if last_time>5:
                      for key, value in workingLight.iteritems():
-                        blynkGet(value)
-                        blynkOnOff(value,0)
+                        if blynkGet(value)==1:
+                           blynkOnOff(value,0)
             else:
               showDebug('Light intensity is low')
               if timeCheck():
@@ -118,16 +119,17 @@ class MySubscribeCallback(SubscribeCallback):
                      for key, value in workingLight.iteritems():
                         #print(key)
                         #print(value)
-                        blynkGet(value)
-                        blynkOnOff(value,1)
+                        if blynkGet(value)==0:
+                           blynkOnOff(value,1)
                   else:
-                     showDebug('ILM0--LastMotionTime is %s' % lastMotionTime)
-                     last_time = round((time.time() - lastMotionTime) / 60, 2)
-                     showDebug(last_time>4)
+                     #showDebug('ILM0--LastMotionTime is %s' % lastMotionTime)
+                     last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
+                     showDebug(last_time)
                      if last_time>4:
-                        showDebug('How %s' % last_time>4)
+                        #showDebug('How %s' % last_time>4)
                         for key, value in workingLight.iteritems():
-                           blynkOnOff(value,0)
+                           if blynkGet(value)==1:
+                              blynkOnOff(value,0)
                            
             pubnub.publish().channel(channel).message([
                                             ['current_time', time.time()],
