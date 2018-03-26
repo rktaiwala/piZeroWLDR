@@ -66,7 +66,7 @@ def blynkOnOff(pinNumber,onOff):
 def blynkGet(pinNumber):
     burl=blynkUrl+'get/%s' %(pinNumber)
     url = urllib.urlopen(burl)
-    print(burl)
+    print(url)
    
 def my_publish_callback(envelope, status):
     # Check whether request successfully completed or not
