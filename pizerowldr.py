@@ -38,6 +38,7 @@ pubnub = PubNub(pnconfig)
 def timeCheck(hr=16, mins=59, sec=55, micros=0):
    now = datetime.datetime.now()
    today5pm = now.replace(hour=hr, minute=mins, second=sec, microsecond=micros)
+   print(now > today5pm)
    return now > today5pm
     
 def blynkProjects():
