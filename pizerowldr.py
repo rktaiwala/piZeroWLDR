@@ -44,10 +44,13 @@ def resetlastMotionTime():
    lastMotionTime = 0
    
 def timeCheck(hr=16, mins=59, sec=55, micros=0):
+   showDebug('Time check 1')
    now = datetime.datetime.now()
    tom = datetime.datetime.now() + datetime.timedelta(days=1)
+   showDebug('Time check 2')
    tom8am = tom.replace(hour=8, minute=0, second=0, microsecond=0)
    today5pm = now.replace(hour=hr, minute=mins, second=sec, microsecond=micros)
+   showDebug('Time check 3')
    showDebug('Time check %s ' % now > today5pm and now<today8am)
    return now > today5pm and now<today8am
     
