@@ -53,7 +53,8 @@ def timeCheck(hr=16, mins=59, sec=55, micros=0):
    showDebug('Time check 3')
    #chk = now > today5pm and now<today8am
    #showDebug('Time check %s' % chk)
-   print(now > today5pm and now<today8am)
+   print(now > today5pm)
+   print(now<today8am)
    return now > today5pm and now<today8am
     
 def blynkProjects():
