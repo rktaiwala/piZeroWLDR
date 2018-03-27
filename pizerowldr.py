@@ -51,7 +51,7 @@ def timeCheck(hr=16, mins=59, sec=55, micros=0):
    tom8am = tom.replace(hour=8, minute=0, second=0, microsecond=0)
    today5pm = now.replace(hour=hr, minute=mins, second=sec, microsecond=micros)
    showDebug('Time check 3')
-   chk = now > today5pm and now<today8am
+   chk = now > today5pm and now<tom8am
    showDebug('Time check %s' % chk)
    return chk
     
