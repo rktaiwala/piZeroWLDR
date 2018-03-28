@@ -42,14 +42,19 @@ def showDebug(msg):
 def resetlastMotionTime():
    global lastMotionTime
    lastMotionTime = 0
+def timebet5pm6pm():
+   now = datetime.datetime.now()
+   today5pm = now.replace(hour=16, minute=59, second=55, microsecond=0)
+   today6pm = now.replace(hour=17, minute=59, second=55, microsecond=0)
+   return now > today5pm and now < today6pm
    
-def timeCheck(hr=16, mins=59, sec=55, micros=0):
+def timeCheck(hr=0, mins=0, sec=0, micros=0):
    showDebug('Time check 1')
    now = datetime.datetime.now()
    tom = datetime.datetime.now() + datetime.timedelta(days=1)
    showDebug('Time check 2')
    tom8am = tom.replace(hour=8, minute=0, second=0, microsecond=0)
-   today5pm = now.replace(hour=hr, minute=mins, second=sec, microsecond=micros)
+   today5pm = now.replace(hour=16, minute=59, second=55, microsecond=0)
    showDebug('Time check 3')
    chk = now > today5pm and now<tom8am
    showDebug('Time check %s' % chk)
@@ -97,6 +102,8 @@ def my_publish_callback(envelope, status):
 def tsMotioncheck():
     global lastMotionTime
     motion = GPIO.input(pin2)
+    if timebet5pm6pm():
+       return True
     if motion == 1:
        lastMotionTime = time.time()
        showDebug('motion Detected at: %s'% lastMotionTime)
