@@ -5,6 +5,10 @@ import sys
 import RPi.GPIO as GPIO
 import urllib
 import json 
+import Adafruit_DHT
+
+sensor = Adafruit_DHT.DHT11
+
 from pubnub.callbacks import SubscribeCallback
 from pubnub.enums import PNStatusCategory
 from pubnub.pnconfiguration import PNConfiguration
@@ -13,6 +17,7 @@ from pubnub.pubnub import PubNub
 GPIO.setmode(GPIO.BCM)
 pin=26
 pin2=20
+dht_pin = 19
 GPIO.setup(pin, GPIO.IN)
 GPIO.setup(pin2, GPIO.IN)
 channel = 'pi-home'
@@ -24,6 +29,9 @@ token = '1e53fe060245429fb7b24522d81598c8'
 blynkUpdateUrl = 'http://blynk-cloud.com/%s/update/pin?value=value' %(token)
 blynkUrl = 'http://blynk-cloud.com/%s/' %(token)
 sleep = 10
+#default temperature and humidity
+temperature = 18
+humidity = 50
 
 pnconfig.subscribe_key = 'sub-c-72ad3b94-2f79-11e8-9e56-1adf9750968b'
 pnconfig.publish_key = 'pub-c-04f2bb5c-42fb-4522-81ec-38440739de37'
@@ -108,6 +116,12 @@ def tsMotioncheck():
        lastMotionTime = time.time()
        showDebug('motion Detected at: %s'% lastMotionTime)
     return motion
+
+def tsReadDHT():
+   global humidity,temperature
+   humidity, temperature = Adafruit_DHT.read_retry(sensor, dht_pin)
+   #return (humidity,temperature)
+
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
         pass  # handle incoming presence data
@@ -118,6 +132,7 @@ class MySubscribeCallback(SubscribeCallback):
             # UI / internal notifications, etc
             
             light = GPIO.input(pin)
+            tsReadDHT()
             
             if light==0:
                showDebug('Light intensity is high')
@@ -152,11 +167,13 @@ class MySubscribeCallback(SubscribeCallback):
                            
             pubnub.publish().channel(channel).message([
                                             ['current_time', time.time()],
-                                            ['light_intensity', light]
+                                            ['light_intensity', light],
+                                            ['humidity',humidity],
+                                            ['temperature',temperature]
                                             ]).async(my_publish_callback)
     def message(self, pubnub, message):
         pass  # Handle new message stored in message.message
- 
+
 pubnub.add_listener(MySubscribeCallback())
 blynkProjects()
 while True:
