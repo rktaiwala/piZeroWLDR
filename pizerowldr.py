@@ -21,6 +21,8 @@ dht_pin = 19
 GPIO.setup(pin, GPIO.IN)
 GPIO.setup(pin2, GPIO.IN)
 channel = 'pi-home'
+pub_channel='pub_channel'
+sub_channel='sub_channel'
 pnconfig = PNConfiguration()
 
 lastMotionTime = 0
@@ -121,7 +123,48 @@ def tsReadDHT():
    global humidity,temperature
    humidity, temperature = Adafruit_DHT.read_retry(sensor, dht_pin)
    #return (humidity,temperature)
+def tspublishDataPubnub():
+   light = GPIO.input(pin)
+   tsReadDHT()
+   if light==0:
+      showDebug('Light intensity is high')
+      if tsMotioncheck() ==0:
+         last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
+         if last_time>5:
+            for key, value in workingLight.iteritems():
+               if blynkGet(value)=='1':
+                  resetlastMotionTime()
+                  blynkOnOff(value,0)
+                           
+   else:
+      showDebug('Light intensity is low')
+      if timeCheck():
+         if tsMotioncheck() ==1:
+            #for k in workingLight:
+            for key, value in workingLight.iteritems():
+               #print(key)
+               #print(value)
+               if blynkGet(value)=='0':
+                  blynkOnOff(value,1)
+         else:
+            #showDebug('ILM0--LastMotionTime is %s' % lastMotionTime)
+            last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
+            showDebug(last_time)
+            if last_time>4:
+               #showDebug('How %s' % last_time>4)
+               for key, value in workingLight.iteritems():
+                  if blynkGet(value) == '1':
+                     blynkOnOff(value,0)
+                     resetlastMotionTime()
 
+   pubnub.publish().channel(pub_channel).message([
+                                   ['current_time', time.time()],
+                                   ['light_intensity', light],
+                                   ['humidity',humidity],
+                                   ['temperature',temperature]
+                                   ]).async(my_publish_callback)
+            
+                    
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
         pass  # handle incoming presence data
@@ -131,52 +174,14 @@ class MySubscribeCallback(SubscribeCallback):
             # Or just use the connected event to confirm you are subscribed for
             # UI / internal notifications, etc
             
-            light = GPIO.input(pin)
-            tsReadDHT()
             
-            if light==0:
-               showDebug('Light intensity is high')
-               if tsMotioncheck() ==0:
-                  last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
-                  if last_time>5:
-                     for key, value in workingLight.iteritems():
-                        if blynkGet(value)=='1':
-                           resetlastMotionTime()
-                           blynkOnOff(value,0)
-                           
-            else:
-              showDebug('Light intensity is low')
-              if timeCheck():
-                  if tsMotioncheck() ==1:
-                     #for k in workingLight:
-                     for key, value in workingLight.iteritems():
-                        #print(key)
-                        #print(value)
-                        if blynkGet(value)=='0':
-                           blynkOnOff(value,1)
-                  else:
-                     #showDebug('ILM0--LastMotionTime is %s' % lastMotionTime)
-                     last_time = round((int(time.time()) - lastMotionTime) / 60, 2)
-                     showDebug(last_time)
-                     if last_time>4:
-                        #showDebug('How %s' % last_time>4)
-                        for key, value in workingLight.iteritems():
-                           if blynkGet(value) == '1':
-                              blynkOnOff(value,0)
-                              resetlastMotionTime()
-                           
-            pubnub.publish().channel(channel).message([
-                                            ['current_time', time.time()],
-                                            ['light_intensity', light],
-                                            ['humidity',humidity],
-                                            ['temperature',temperature]
-                                            ]).async(my_publish_callback)
     def message(self, pubnub, message):
         pass  # Handle new message stored in message.message
 
 pubnub.add_listener(MySubscribeCallback())
+pubnub.subscribe().channels(sub_channel).execute()
 blynkProjects()
 while True:
- pubnub.subscribe().channels(channel).execute()
+ tspublishDataPubnub()
  time.sleep(sleep)
 
