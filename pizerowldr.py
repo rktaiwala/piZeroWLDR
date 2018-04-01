@@ -164,7 +164,7 @@ def tspublishDataPubnub():
                                    ['temperature',temperature]
                                    ]).async(my_publish_callback)
             
-                    
+               
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
         pass  # handle incoming presence data
@@ -172,9 +172,7 @@ class MySubscribeCallback(SubscribeCallback):
         if status.category == PNStatusCategory.PNConnectedCategory:
             # Connect event. You can do stuff like publish, and know you'll get it.
             # Or just use the connected event to confirm you are subscribed for
-            # UI / internal notifications, etc
-            
-            
+            # UI / internal notifications, etc   
     def message(self, pubnub, message):
         pass  # Handle new message stored in message.message
 
