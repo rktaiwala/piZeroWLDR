@@ -173,10 +173,11 @@ class MySubscribeCallback(SubscribeCallback):
             # Connect event. You can do stuff like publish, and know you'll get it.
             # Or just use the connected event to confirm you are subscribed for
             # UI / internal notifications, etc 
-         print "message=", status.message
+         print 'Connected'
     
     def message(self, pubnub, message):
-      pass  # Handle new message stored in message.message
+      #pass  # Handle new message stored in message.message
+      print "message=", message.message
 
 pubnub.add_listener(MySubscribeCallback())
 pubnub.subscribe().channels(sub_channel).execute()
