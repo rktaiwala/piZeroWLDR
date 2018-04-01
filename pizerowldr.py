@@ -173,7 +173,7 @@ class MySubscribeCallback(SubscribeCallback):
             # Connect event. You can do stuff like publish, and know you'll get it.
             # Or just use the connected event to confirm you are subscribed for
             # UI / internal notifications, etc 
-      print "message=", status.message
+         print "message=", status.message
     
     def message(self, pubnub, message):
       pass  # Handle new message stored in message.message
