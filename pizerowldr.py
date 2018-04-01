@@ -91,8 +91,9 @@ def blynkProjects():
 def blynkOnOff(pinNumber,onOff):
     burl=blynkUrl+'update/%s?value=%s' %(pinNumber,onOff)
     url = urllib.urlopen(burl)
-    res = json.loads(url.read().decode())
-    showDebug(res)
+    url.read()
+    #res = json.loads(url.read().decode())
+    #showDebug(res)
    
 def blynkGet(pinNumber):
     burl=blynkUrl+'get/%s' %(pinNumber)
