@@ -164,8 +164,8 @@ def tspublishDataPubnub():
                                    ['motion',tsMotioncheck()],
                                    ['humidity',humidity],
                                    ['temperature',temperature],
-                                   {'eon':[temperature]}]).async(my_publish_callback)
-            
+                                   ]).async(my_publish_callback)
+   pubnub.publish().channel(eon_msg).message({'eon':[temperature]}).async(my_publish_callback)         
                
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
