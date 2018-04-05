@@ -163,8 +163,8 @@ def tspublishDataPubnub():
                                    ['light_intensity', light],
                                    ['motion',tsMotioncheck()],
                                    ['humidity',humidity],
-                                   ['temperature',temperature]
-                                   ],['eon',{'temperature':temperature,'humidity':humidity}]).async(my_publish_callback)
+                                   ['temperature',temperature],
+                                   ['eon',{'temperature':temperature,'humidity':humidity}]]).async(my_publish_callback)
             
                
 class MySubscribeCallback(SubscribeCallback):
