@@ -161,6 +161,7 @@ def tspublishDataPubnub():
    pubnub.publish().channel(pub_channel).message([
                                    ['current_time', time.time()],
                                    ['light_intensity', light],
+                                   ['motion',tsMotioncheck()],
                                    ['humidity',humidity],
                                    ['temperature',temperature]
                                    ]).async(my_publish_callback)
