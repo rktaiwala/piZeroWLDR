@@ -127,6 +127,7 @@ def tsReadDHT():
 def tspublishDataPubnub():
    light = GPIO.input(pin)
    tsReadDHT()
+   
    if light==0:
       showDebug('Light intensity is high')
       if tsMotioncheck() ==0:
@@ -136,7 +137,7 @@ def tspublishDataPubnub():
                if blynkGet(value)=='1':
                   resetlastMotionTime()
                   blynkOnOff(value,0)
-                           
+
    else:
       showDebug('Light intensity is low')
       if timeCheck():
@@ -166,7 +167,7 @@ def tspublishDataPubnub():
                                    ['temperature',temperature],
                                    ]).async(my_publish_callback)
    pubnub.publish().channel('eon_msg').message({'eon':[temperature]}).async(my_publish_callback)         
-               
+      
 class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
         pass  # handle incoming presence data
@@ -185,6 +186,9 @@ pubnub.add_listener(MySubscribeCallback())
 pubnub.subscribe().channels(sub_channel).execute()
 blynkProjects()
 while True:
-   tspublishDataPubnub()
-   time.sleep(sleep)
+   try:
+      tspublishDataPubnub()
+      time.sleep(sleep)
+   except: urllib2.URLError as err:
+      time.sleep(30)
 
