@@ -4,7 +4,6 @@ import datetime
 import sys
 import RPi.GPIO as GPIO
 import urllib
-import urllib.error
 import json 
 import Adafruit_DHT
 
@@ -190,6 +189,6 @@ while True:
    try:
       tspublishDataPubnub()
       time.sleep(sleep)
-   except urllib.error.HTTPError as err:
+   except urllib.HTTPError as err:
       time.sleep(30)
 
