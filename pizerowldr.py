@@ -4,6 +4,7 @@ import datetime
 import sys
 import RPi.GPIO as GPIO
 import urllib
+import urllib.error
 import json 
 import Adafruit_DHT
 
