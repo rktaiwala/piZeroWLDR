@@ -189,6 +189,6 @@ while True:
    try:
       tspublishDataPubnub()
       time.sleep(sleep)
-   except: urllib.error as err:
+   except urllib.error as err:
       time.sleep(30)
 
