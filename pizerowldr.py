@@ -189,6 +189,7 @@ while True:
    try:
       tspublishDataPubnub()
       time.sleep(sleep)
-   except urllib.URLError as err:
+   except:
+      showDebug('no internet')
       time.sleep(30)
 
